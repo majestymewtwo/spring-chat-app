@@ -8,22 +8,25 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.util.HtmlUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @CrossOrigin
 @RequiredArgsConstructor
 public class ChatController {
-    private final SimpMessagingTemplate simpMessagingTemplate;
-    @MessageMapping("/message")
-    @SendTo("/chatroom/public")
-    public Message receiveMessage(@Payload Message message){
-        return message;
-    }
-
-    @MessageMapping("/private-message")
-    public Message recMessage(@Payload Message message){
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
-        System.out.println(message.toString());
-        return message;
+    public List<Message> messages = new ArrayList<>();
+    @MessageMapping("/hello")
+    @SendTo("/topic/greetings")
+    public List<Message> greeting(Message message) throws Exception {
+        Thread.sleep(100);
+        Message response = new Message();
+        response.setMessage(message.getMessage());
+        messages.add(response);
+        return messages;
     }
 }

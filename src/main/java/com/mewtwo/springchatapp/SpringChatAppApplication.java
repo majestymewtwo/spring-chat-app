@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
+@CrossOrigin
 @RestController
 @RequestMapping("/")
-@CrossOrigin(origins = "http://localhost:5173")
 public class SpringChatAppApplication {
-    @GetMapping
-    public String test(){
-        return "This works";
-    }
     public static void main(String[] args) {
         SpringApplication.run(SpringChatAppApplication.class, args);
+    }
+    @GetMapping
+    public String nice(){
+        return "nice";
     }
 }
