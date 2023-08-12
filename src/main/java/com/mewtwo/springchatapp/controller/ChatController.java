@@ -23,15 +23,14 @@ public class ChatController {
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
     public List<Message> greeting(@Payload Message message, @Header("simpSessionId") String sessionId) throws Exception {
-        Thread.sleep(100);
-        Message response = new Message();
-        response.setMessage(message.getMessage());
-        messages.add(response);
+        messages.add(message);
         return messages;
     }
     @MessageMapping("/user-message")
-    public Message sendMessage(@Payload Message message) {
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiver(), "/private-chat", message);
-        return message;
+    public List<Message> sendMessage(@Payload Message message) {
+        System.out.println(message.getReceiver());
+        messages.add(message);
+        simpMessagingTemplate.convertAndSendToUser(message.getReceiver(), "/private", message);
+        return messages;
     }
 }
